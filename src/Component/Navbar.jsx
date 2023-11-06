@@ -1,7 +1,9 @@
+//this is navbar for Image galler logo and it's sign button
 const Navbar = () => {
   return (
     <div className="navbar bg-base-200 px-2 lg:px-6">
       <div className="navbar-start">
+        
         <a href='#' className="font-serif text-xl lg:text-2xl">Image Gallery</a>
       </div>
 

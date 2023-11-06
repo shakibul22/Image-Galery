@@ -1,5 +1,5 @@
 
-
+//This footer is added just for web beauty nothing else.
 const Footer = () => {
     return (
         <div>

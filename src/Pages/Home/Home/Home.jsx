@@ -2,21 +2,25 @@ import { useState, useRef } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const Home = () => {
-  const [images, setImages] = useState([]);
-  const [isDragging, setIsDragging] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const fileInputRef = useRef(null);
-  const [draggedImage, setDraggedImage] = useState(null);
+  // State for storing images and other variables
+  const [images, setImages] = useState([]); // Stores uploaded images
+  const [isDragging, setIsDragging] = useState(false); // Tracks whether an image is being dragged
+  const [selectedImages, setSelectedImages] = useState([]); // Stores selected images
+  const fileInputRef = useRef(null); // Reference to the file input element
+  const [draggedImage, setDraggedImage] = useState(null); // Stores the currently dragged image
+
+  // Function to open the file selection dialog
   const selectFiles = () => {
     fileInputRef.current.click();
   };
 
+  // Function to handle file selection (from the file input)
   const onFileSelect = (e) => {
     const files = e.target.files;
     if (files.length === 0) return;
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.split('/')[0] !== 'image') continue;
-      if (!images.some((e) => e.name === files[i].name)) {
+      if (!images.some((img) => img.name === files[i].name)) {
         setImages((prevImages) => [
           ...prevImages,
           {
@@ -28,13 +32,14 @@ const Home = () => {
     }
   };
 
+  // Function to handle dropping images onto the drop area
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     const files = e.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.split('/')[0] === 'image' &&
-          !images.some((e) => e.name === files[i].name)) {
+          !images.some((img) => img.name === files[i].name)) {
         setImages((prevImages) => [
           ...prevImages,
           {
@@ -46,17 +51,20 @@ const Home = () => {
     }
   };
 
+  // Function to handle drag over the drop area
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
     e.dataTransfer.dropEffect = 'copy';
   };
 
+  // Function to handle drag leave from the drop area
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
+  // Function to toggle image selection (checkbox)
   const toggleImageSelection = (imageName) => {
     if (selectedImages.includes(imageName)) {
       setSelectedImages(selectedImages.filter((name) => name !== imageName));
@@ -65,15 +73,18 @@ const Home = () => {
     }
   };
 
+  // Function to delete selected images
   const deleteSelectedImages = () => {
     setImages(images.filter((image) => !selectedImages.includes(image.name)));
     setSelectedImages([]);
   };
-  
+
+  // Function to handle the start of image drag
   const handleDragStart = (image) => {
     setDraggedImage(image);
   };
 
+  // Function to handle the end of image drag and rearrange images
   const handleDragEnd = (targetImage) => {
     if (draggedImage === targetImage) {
       return; // No change needed, same image
@@ -88,7 +99,6 @@ const Home = () => {
 
     setImages(updatedImages);
   };
-
 
 
   return (
